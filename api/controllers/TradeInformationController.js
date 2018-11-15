@@ -83,6 +83,8 @@ get: function (req, res) {
 },
 
 
+
+
 update: function (req, res) {
 
     let tradeinformationid = req.param("tradeinformation_id");
@@ -124,13 +126,11 @@ delete: function (req, res) {
     let tradeinformationid = req.param("id");
 
     //Delete function takes key:value pair by which it will search and delete the record
+
+
     TradeInformation.destroy({id: tradeinformationid})
         .then(function (information) {
-            return res.send({
-                "success": true,
-                "message": "Record deleted successfully",
-                "data": information
-            });
+            console.log("input")
         })
         .catch(function (err) {
             sails.log.debug(err);
@@ -139,10 +139,34 @@ delete: function (req, res) {
                 "message": "Unable to delete record"
             });
         });
+
+
+
+TradeInformation.find()
+        .then(function (information) {
+            if(!information || information.length == 0) {
+                return res.send({
+                    "success": false,
+                    "message": "No records found in DB"
+                });
+            }
+
+            return res.send({
+                "success": true,
+                "message": "Records fetched",
+                "data": information
+            });
+        })
+        .catch(function (err) {
+            sails.log.debug(err);
+            return res.send({
+                "success": false,
+                "message": "Unable to fetch records"
+            });
+        });
+
+
 }
-
-
-
   
 
 };
