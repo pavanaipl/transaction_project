@@ -87,7 +87,8 @@ get: function (req, res) {
 
 update: function (req, res) {
 
-    let tradeinformationid = req.param("tradeinformation_id");
+    let tradeinformationid = req.param("id");
+    console.log(tradeinformationid)
     let contract_id = req.param("contract_id");
     let contract_status = req.param("contract_status");
     let portfolio = req.param("portfolio");
@@ -130,19 +131,7 @@ delete: function (req, res) {
 
     TradeInformation.destroy({id: tradeinformationid})
         .then(function (information) {
-            console.log("input")
-        })
-        .catch(function (err) {
-            sails.log.debug(err);
-            return res.send({
-                "success": false,
-                "message": "Unable to delete record"
-            });
-        });
-
-
-
-TradeInformation.find()
+            TradeInformation.find()
         .then(function (information) {
             if(!information || information.length == 0) {
                 return res.send({
@@ -164,6 +153,16 @@ TradeInformation.find()
                 "message": "Unable to fetch records"
             });
         });
+        })
+        .catch(function (err) {
+            sails.log.debug(err);
+            return res.send({
+                "success": false,
+                "message": "Unable to delete record"
+            });
+        });
+
+
 
 
 }
